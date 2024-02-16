@@ -4,6 +4,8 @@ import useSWR from "swr";
 import Link from "next/link.js";
 import { StyledLink } from "../components/StyledLink.js";
 
+// start Seite
+
 const List = styled.ul`
   list-style: none;
   display: flex;
@@ -23,26 +25,26 @@ const FixedLink = styled(StyledLink)`
   right: 50px;
 `;
 export default function Home() {
-  const { data } = useSWR("/api/places", { fallbackData: [] });
+  const { data } = useSWR("/api/courses", { fallbackData: [] });
 
   return (
     <>
       <List role="list">
-        {data.map((place) => {
+        {data.map((course) => {
           return (
-            <ListItem key={place._id}>
+            <ListItem key={course._id}>
               <Card
-                name={place.name}
-                image={place.image}
-                location={place.location}
-                id={`${place._id.$oid ?? place._id}`}
+                name={course.name}
+                image={course.image}
+                location={course.location}
+                id={`${course._id.$oid ?? course._id}`}
               />
             </ListItem>
           );
         })}
       </List>
       <Link href="/create" passHref legacyBehavior>
-        <FixedLink>+ place</FixedLink>
+        <FixedLink>+ course</FixedLink>
       </Link>
     </>
   );

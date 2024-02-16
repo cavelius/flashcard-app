@@ -7,6 +7,8 @@ import { StyledButton } from "../../../components/StyledButton.js";
 import { StyledImage } from "../../../components/StyledImage.js";
 import Comments from "../../../components/Comments.js";
 
+// 1 unterseite
+
 const ImageContainer = styled.div`
   position: relative;
   height: 15rem;
@@ -34,18 +36,18 @@ export default function DetailsPage() {
   const { isReady } = router;
   const { id } = router.query;
   const {
-    data: { place, comments } = {},
+    data: { course, comments } = {},
     isLoading,
     error,
     mutate,
-  } = useSWR(`/api/places/${id}`);
+  } = useSWR(`/api/courses/${id}`);
 
   if (!isReady || isLoading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! 🔥</h2>;
 
-  async function deletePlace() {
-    if (confirm(`Are you sure that you want to delete this place?`) == true) {
-      const response = await fetch(`/api/places/${id}`, {
+  async function deleteCourse() {
+    if (confirm(`Are you sure that you want to delete this course?`) == true) {
+      const response = await fetch(`/api/courses/${id}`, {
         method: "DELETE",
       });
 
@@ -56,18 +58,18 @@ export default function DetailsPage() {
       }
     }
   }
-  async function addCommentPlace(comment) {
-    const response = await fetch(`/api/places/${id}`, {
+  async function addCardCourse(card) {
+    const response = await fetch(`/api/courses/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(comment),
+      body: JSON.stringify(card),
     });
 
     if (response.ok) {
       mutate();
-      alert("You comment was added succesfully! 🥳");
+      alert("You Card was added succesfully! 🥳");
     } else {
       alert("There was a Error");
     }
@@ -80,7 +82,7 @@ export default function DetailsPage() {
       </Link>
       <ImageContainer>
         <StyledImage
-          src={place.image}
+          src={course.image}
           priority
           fill
           sizes="(max-width: 768px) 100vw,
@@ -90,23 +92,23 @@ export default function DetailsPage() {
         />
       </ImageContainer>
       <h2>
-        {place.name}, {place.location}
+        {course.name}, {course.location}
       </h2>
-      <Link href={place.mapURL} passHref legacyBehavior>
+      <Link href={course.mapURL} passHref legacyBehavior>
         <StyledLocationLink>Location on Google Maps</StyledLocationLink>
       </Link>
-      <p>{place.description}</p>
+      <p>{course.description}</p>
       <ButtonContainer>
-        <Link href={`/places/${id}/edit`} passHref legacyBehavior>
+        <Link href={`/courses/${id}/edit`} passHref legacyBehavior>
           <StyledLink>Edit</StyledLink>
         </Link>
-        <StyledButton onClick={deletePlace} type="button" variant="delete">
+        <StyledButton onClick={deleteCourse} type="button" variant="delete">
           Delete
         </StyledButton>
       </ButtonContainer>
       <Comments
-        submitComment={addCommentPlace}
-        locationName={place.name}
+        submitComment={addCardCourse}
+        locationName={course.name}
         comments={comments}
       />
     </>

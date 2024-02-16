@@ -4,19 +4,27 @@ import useSWR from "swr";
 import Form from "../../../components/Form.js";
 import { StyledLink } from "../../../components/StyledLink.js";
 
+// Edit Seite Course bearbeiten
+
 export default function EditPage() {
   const router = useRouter();
   const { isReady } = router;
   const { id } = router.query;
-  const { data: place, isLoading, error, mutate } = useSWR(`/api/places/${id}`);
+  const {
+    data: course,
+    isLoading,
+    error,
+    mutate,
+  } = useSWR(`/api/courses/${id}`);
 
-  async function editPlace(place) {
-    const response = await fetch(`/api/places/${id}`, {
+  // unpdate Entry
+  async function editCourse(course) {
+    const response = await fetch(`/api/courses/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(place),
+      body: JSON.stringify(course),
     });
 
     if (response.ok) {
@@ -31,14 +39,14 @@ export default function EditPage() {
   if (error) return <h2>Error! 🔥</h2>;
   return (
     <>
-      <h2 id="edit-place">Edit Place</h2>
-      <Link href={`/places/${id}`} passHref legacyBehavior>
+      <h2 id="edit-course">Edit Course</h2>
+      <Link href={`/courses/${id}`} passHref legacyBehavior>
         <StyledLink justifySelf="start">back</StyledLink>
       </Link>
       <Form
-        onSubmit={editPlace}
-        formName={"edit-place"}
-        defaultData={place.place}
+        onSubmit={editCourse}
+        formName={"edit-course"}
+        defaultData={course.course}
       />
     </>
   );

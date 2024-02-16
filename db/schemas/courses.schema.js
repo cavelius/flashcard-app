@@ -14,3 +14,4 @@ const coursesSchema = new Schema({
 const Courses = models.courses || model("courses", coursesSchema);
 
 export default Courses;
+console.log("________________Courses:", Courses);

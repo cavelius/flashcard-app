@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const { Schema, models, model } = mongoose;
 
-const commentsSchema = new Schema({
+const cardsSchema = new Schema({
   name: { type: String, required: true },
   comment: { type: String, required: true },
 });
 
-const Comments = models.comments || model("comments", commentsSchema);
+const Cards = models.cards || model("cards", cardsSchema);
 
-export default Comments;
+export default Cards;

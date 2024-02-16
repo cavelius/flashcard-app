@@ -80,7 +80,7 @@ export default function Card({ name, image, location, id }) {
       <p>
         <Location>Location: {location}</Location>
       </p>
-      <Link href={`places/${id}`} passHref legacyBehavior>
+      <Link href={`courses/${id}`} passHref legacyBehavior>
         <Anchor>
           <ScreenReaderOnly>More Info</ScreenReaderOnly>
         </Anchor>

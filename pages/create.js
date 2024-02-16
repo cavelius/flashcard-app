@@ -4,24 +4,27 @@ import { useRouter } from "next/router";
 import Form from "../components/Form.js";
 import { StyledLink } from "../components/StyledLink.js";
 
+// add course Seite
+
 const StyledBackLink = styled(StyledLink)`
   justify-self: flex-start;
 `;
 
-export default function CreatePlacePage() {
+export default function CreateCoursePage() {
   const router = useRouter();
 
-  async function addPlace(place) {
-    const response = await fetch(`/api/places`, {
+  // erstellt einen neuen Course
+  async function addCourse(course) {
+    const response = await fetch(`/api/courses`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(place),
+      body: JSON.stringify(course),
     });
 
     if (response.ok) {
-      alert("New Place added succesfully! 🥳");
+      alert("New Course added succesfully! 🥳");
       router.push("/");
     } else {
       alert("There was an error with the server. Please try again later 🤘🏼");
@@ -30,11 +33,11 @@ export default function CreatePlacePage() {
 
   return (
     <>
-      <h2 id="add-place">Add Place</h2>
+      <h2 id="add-course">Add Course</h2>
       <Link href="/" passHref legacyBehavior>
         <StyledBackLink>back</StyledBackLink>
       </Link>
-      <Form onSubmit={addPlace} formName={"add-place"} />
+      <Form onSubmit={addCourse} formName={"add-course"} />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import dbConnect from "../../../../db/connection";
-import Places from "../../../../db/schemas/palces.schema";
-import Comments from "../../../../db/schemas/comments.schema";
+import Courses from "../../../../db/schemas/courses.schema";
+import Comments from "../../../../db/schemas/cards.schema";
 import { db_comments } from "../../../../lib/db_comments";
 
 export default async function handler(request, response) {
@@ -13,10 +13,10 @@ export default async function handler(request, response) {
   await dbConnect();
 
   if (request.method === "GET") {
-    const place = await Places.findById(id);
-    const commentIds = place?.comments;
+    const course = await Courses.findById(id);
+    const commentIds = course?.comments;
 
-    if (!place) {
+    if (!course) {
       return response.status(404).json({ status: "Not found" });
     }
 
@@ -30,24 +30,25 @@ export default async function handler(request, response) {
         )
       ).filter(Boolean);
 
-      return response.status(200).json({ place: place, comments: comments });
+      return response.status(200).json({ course: course, comments: comments });
     } else {
-      return response.status(200).json({ place: place, comments: [] });
+      return response.status(200).json({ course: course, comments: [] });
     }
   }
 
+  // Course updaten mit der Edit Form
   if (request.method === "PUT") {
-    await Places.findByIdAndUpdate(id, {
+    await Courses.findByIdAndUpdate(id, {
       $set: request.body,
     });
 
-    return response.status(200).json({ status: "place sucsessfully updated" });
+    return response.status(200).json({ status: "course sucsessfully updated" });
   }
-  // DELETE PLACE
+  // DELETE Course
   if (request.method === "DELETE") {
     try {
-      // First Delete the comments of the Place
-      await Places.findById(id)
+      // First Delete the comments of the Course
+      await Courses.findById(id)
         .select("comments")
         .then(async (document) => {
           const comments = document.comments;
@@ -57,15 +58,15 @@ export default async function handler(request, response) {
             });
           }
         });
-      // Then Delete the Place
-      const places = await Places.findByIdAndDelete(id);
-      if (!places) {
+      // Then Delete the Course
+      const courses = await Courses.findByIdAndDelete(id);
+      if (!courses) {
         return response.status(404).json({ message: "Document not found" });
       }
 
       return response
         .status(200)
-        .json({ message: "Place deleted", data: places });
+        .json({ message: "Course deleted", data: courses });
     } catch (error) {
       return response.status(405).json({ message: error.message });
     }
@@ -76,7 +77,7 @@ export default async function handler(request, response) {
       const newComment = request.body;
       const requestCommentCreate = await Comments.create(newComment);
 
-      await Places.updateOne(
+      await Courses.updateOne(
         { _id: id },
         { $push: { comments: requestCommentCreate._id } }
       );

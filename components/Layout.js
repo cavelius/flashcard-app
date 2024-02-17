@@ -15,7 +15,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Head>
-        <title>Tourio</title>
+        <title>flashcards</title>
       </Head>
       <TitleBar />
       <Main>{children}</Main>

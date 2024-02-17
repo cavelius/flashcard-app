@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useRouter } from "next/router";
 import Form from "../components/Form.js";
 import { StyledLink } from "../components/StyledLink.js";
+import useSWR from "swr";
 
 // add course Seite
 
@@ -24,20 +25,20 @@ export default function CreateCoursePage() {
     });
 
     if (response.ok) {
-      alert("New Course added succesfully! 🥳");
+      await response.json();
       router.push("/");
     } else {
-      alert("There was an error with the server. Please try again later 🤘🏼");
+      console.error(`Error: ${response.status}`);
     }
   }
 
   return (
     <>
-      <h2 id="add-course">Add Course</h2>
+      <h2 id="add-place">Add Course</h2>
       <Link href="/" passHref legacyBehavior>
         <StyledBackLink>back</StyledBackLink>
       </Link>
-      <Form onSubmit={addCourse} formName={"add-course"} />
+      <Form onSubmit={addCourse} formName={"add-place"} />
     </>
   );
 }

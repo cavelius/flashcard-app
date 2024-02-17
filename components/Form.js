@@ -41,27 +41,6 @@ export default function Form({ onSubmit, formName, defaultData }) {
         type="text"
         defaultValue={defaultData?.name}
       />
-      <Label htmlFor="image-url">Image Url</Label>
-      <Input
-        id="image-url"
-        name="image"
-        type="text"
-        defaultValue={defaultData?.image}
-      />
-      <Label htmlFor="location">Location</Label>
-      <Input
-        id="location"
-        name="location"
-        type="text"
-        defaultValue={defaultData?.location}
-      />
-      <Label htmlFor="map-url">Map Url</Label>
-      <Input
-        id="map-url"
-        name="mapURL"
-        type="text"
-        defaultValue={defaultData?.mapURL}
-      />
       <Label htmlFor="description">Description</Label>
       <Textarea
         name="description"

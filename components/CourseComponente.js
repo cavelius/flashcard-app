@@ -1,6 +1,5 @@
 import Link from "next/link.js";
 import styled from "styled-components";
-import { StyledImage } from "./StyledImage.js";
 
 const Article = styled.article`
   // border: 5px solid black;
@@ -8,11 +7,6 @@ const Article = styled.article`
   padding: 0.5rem;
   background-color: #f5f5f5;
   box-shadow: 3px 3px 5px #e8e8e8;
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  height: 20rem;
 `;
 
 const Figure = styled.figure`
@@ -44,41 +38,26 @@ const ScreenReaderOnly = styled.span`
   border-width: 0;
 `;
 
-const StyledImageWithBorderRadius = styled(StyledImage)`
-  border-radius: 0.5rem;
-`;
-
 const Name = styled.h2`
   color: black;
   font-size: 20px;
 `;
 
-const Location = styled.p`
+const Descripiton = styled.p`
   color: black;
   font-size: 15px;
 `;
 
-export default function Card({ name, image, location, id }) {
+export default function Course({ name, description, id }) {
   return (
     <Article>
       <Figure>
-        <ImageContainer>
-          <StyledImageWithBorderRadius
-            src={image}
-            priority={true}
-            fill
-            sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
-            alt=""
-          />
-        </ImageContainer>
         <figcaption>
           <Name>{name}</Name>
         </figcaption>
       </Figure>
       <p>
-        <Location>Location: {location}</Location>
+        <Descripiton>description: {description}</Descripiton>
       </p>
       <Link href={`courses/${id}`} passHref legacyBehavior>
         <Anchor>

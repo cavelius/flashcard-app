@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Card from "../components/Card.js";
+import Card from "../components/CourseComponente.js";
 import useSWR from "swr";
 import Link from "next/link.js";
 import { StyledLink } from "../components/StyledLink.js";
@@ -21,7 +21,7 @@ const ListItem = styled.li`
 `;
 const FixedLink = styled(StyledLink)`
   position: fixed;
-  bottom: 50px;
+  top: 50px;
   right: 50px;
 `;
 export default function Home() {
@@ -35,8 +35,7 @@ export default function Home() {
             <ListItem key={course._id}>
               <Card
                 name={course.name}
-                image={course.image}
-                location={course.location}
+                description={course.description}
                 id={`${course._id.$oid ?? course._id}`}
               />
             </ListItem>

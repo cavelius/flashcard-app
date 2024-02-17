@@ -1,94 +1,43 @@
 import dbConnect from "../../../../db/connection";
-import Courses from "../../../../db/schemas/courses.schema";
-import Comments from "../../../../db/schemas/cards.schema";
-import { db_comments } from "../../../../lib/db_comments";
+import Course from "@/db/models/Course";
+import Card from "@/db/models/Card";
 
 export default async function handler(request, response) {
   const { id } = request.query;
 
-  if (!id) {
-    return;
-  }
-  // Initializing the connection.
-  await dbConnect();
-
-  if (request.method === "GET") {
-    const course = await Courses.findById(id);
-    const commentIds = course?.comments;
-
-    if (!course) {
-      return response.status(404).json({ status: "Not found" });
-    }
-
-    if (commentIds && commentIds.length > 0) {
-      const comments = (
-        await Promise.all(
-          commentIds.map(async (commentId) => {
-            const fullComment = await Comments.findById(commentId);
-            return fullComment;
-          })
-        )
-      ).filter(Boolean);
-
-      return response.status(200).json({ course: course, comments: comments });
-    } else {
-      return response.status(200).json({ course: course, comments: [] });
-    }
-  }
-
-  // Course updaten mit der Edit Form
-  if (request.method === "PUT") {
-    await Courses.findByIdAndUpdate(id, {
-      $set: request.body,
-    });
-
-    return response.status(200).json({ status: "course sucsessfully updated" });
-  }
-  // DELETE Course
-  if (request.method === "DELETE") {
-    try {
-      // First Delete the comments of the Course
-      await Courses.findById(id)
-        .select("comments")
-        .then(async (document) => {
-          const comments = document.comments;
-          if (comments.length > 0) {
-            comments.forEach(async (id) => {
-              await Comments.findByIdAndDelete(id);
-            });
-          }
-        });
-      // Then Delete the Course
-      const courses = await Courses.findByIdAndDelete(id);
-      if (!courses) {
-        return response.status(404).json({ message: "Document not found" });
+  try {
+    await dbConnect();
+    if (request.method === "GET") {
+      const courseFound = await Course.findById(id).populate("cards");
+      if (!courseFound) {
+        return response.status(404).json({ status: "Not Found" });
       }
-
-      return response
-        .status(200)
-        .json({ message: "Course deleted", data: courses });
-    } catch (error) {
-      return response.status(405).json({ message: error.message });
+      return response.status(200).json(courseFound);
     }
-  }
-
-  if (request.method === "POST") {
-    try {
-      const newComment = request.body;
-      const requestCommentCreate = await Comments.create(newComment);
-
-      await Courses.updateOne(
-        { _id: id },
-        { $push: { comments: requestCommentCreate._id } }
-      );
-
-      return response.status(200).json({
-        message: "New comment added!",
-      });
-    } catch (error) {
-      console.error(error);
+    if (request.method === "PUT") {
+      const courseToUpdate = await Course.findByIdAndUpdate(id, request.body);
+      response.status(200).json(courseToUpdate);
     }
-  } else {
-    return response.status(405).json({ message: "Method not allowed" });
+    if (request.method === "DELETE") {
+      const courseToDelete = await Course.findByIdAndDelete(id);
+      await Card.deleteMany({ _id: { $in: courseToDelete.cards } });
+      response.status(260).json("Card deleted");
+    }
+    if (request.method === "POST") {
+      try {
+        const newCard = await Card.create(request.body);
+        await Course.findByIdAndUpdate(
+          id,
+          { $push: { cards: newCard._id } },
+          { new: true }
+        );
+        response.status(200).json({ success: "card uploaded" });
+      } catch (e) {
+        response.status(500).json({ error: "error uploading card" });
+        console.log(e);
+      }
+    }
+  } catch (e) {
+    console.log(e);
   }
 }

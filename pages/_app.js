@@ -2,6 +2,10 @@ import GlobalStyle from "../styles.js";
 import { SWRConfig } from "swr";
 import Layout from "../components/Layout.js";
 
+// diese Datei ist ein Rahmen um die gesamte Anwendung. Sie können es verwenden,
+// um gemeinsame Funktionen und Einstellungen zu definieren,
+// die auf alle Seiten Ihrer Anwendung angewendet werden sollen.
+
 export default function App({ Component, pageProps }) {
   return (
     <SWRConfig

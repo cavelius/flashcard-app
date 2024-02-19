@@ -4,9 +4,9 @@ import useSWR from "swr";
 import styled from "styled-components";
 import { StyledLink } from "../../../components/StyledLink.js";
 import { StyledButton } from "../../../components/StyledButton.js";
-import Comments from "../../../components/CardComponente.js";
+import Card from "../../../components/CardComponente.js";
 
-// 1 unterseite
+// Frontend der 1 Unterseite
 
 const ButtonContainer = styled.section`
   display: flex;
@@ -28,8 +28,12 @@ const StyledLocationLink = styled(StyledLink)`
 export default function DetailsPage() {
   const router = useRouter();
   const { isReady } = router;
+  // id verlinkt auf die [id] im ordnerverzeichnis
   const { id } = router.query;
   const { data: course, isLoading, error } = useSWR(`/api/courses/${id}`);
+
+  // der aktuelle course wird angezeigt
+  console.log("course:", course);
 
   if (!isReady || isLoading) return <h2>Loading...</h2>;
   if (error) return <h2>Error! 🔥</h2>;
@@ -63,7 +67,7 @@ export default function DetailsPage() {
           Delete
         </StyledButton>
       </ButtonContainer>
-      <Comments locationName={course.name} />
+      <Card />
     </>
   );
 }

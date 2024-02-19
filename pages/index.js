@@ -4,7 +4,7 @@ import useSWR from "swr";
 import Link from "next/link.js";
 import { StyledLink } from "../components/StyledLink.js";
 
-// start Seite
+// Frontend start Seite
 
 const List = styled.ul`
   list-style: none;
@@ -25,7 +25,12 @@ const FixedLink = styled(StyledLink)`
   right: 50px;
 `;
 export default function Home() {
+  // {data} wird verwendet, um dynamisch die Daten zu rendern,
+  // die von der useSWR-Hook abgerufen wurden.
   const { data } = useSWR("/api/courses", { fallbackData: [] });
+
+  console.log("data:", data);
+  // data beinhaltet: id,name und description des courses
 
   return (
     <>

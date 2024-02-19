@@ -59,6 +59,9 @@ export default function DetailsPage() {
       </Link>
       <h2>{course.name}</h2>
       <p>{course.description}</p>
+      <Link href={`/courses/${id}/start-quiz`} passHref legacyBehavior>
+        <StyledLink>start quiz</StyledLink>
+      </Link>
       <ButtonContainer>
         <Link href={`/courses/${id}/edit`} passHref legacyBehavior>
           <StyledLink>Edit</StyledLink>

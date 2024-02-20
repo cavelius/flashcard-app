@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import Card from "../components/CourseComponente.js";
+import Course from "../components/CourseComponente.js";
 import useSWR from "swr";
 import Link from "next/link.js";
 import { StyledLink } from "../components/StyledLink.js";
 
-// Frontend start Seite
+// FRONEND START
 
 const List = styled.ul`
   list-style: none;
@@ -38,7 +38,7 @@ export default function Home() {
         {data.map((course) => {
           return (
             <ListItem key={course._id}>
-              <Card
+              <Course
                 name={course.name}
                 description={course.description}
                 id={`${course._id.$oid ?? course._id}`}

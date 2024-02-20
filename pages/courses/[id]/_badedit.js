@@ -1,25 +1,23 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 import useSWR from "swr";
-import useSWRMutation from "swr/mutation";
-import Form from "../../../components/Form.js";
-import { StyledLink } from "../../../components/StyledLink.js";
+import Form from "../../../components/Form";
+import { StyledLink } from "../../../components/StyledLink";
 
-// Edit Seite Course bearbeiten
+// Startseite Edit
 
 export default function EditPage() {
   const router = useRouter();
   const { isReady } = router;
   const { id } = router.query;
-  const {
-    data: course,
-    isLoading,
-    error,
-    mutate,
-  } = useSWR(`/api/courses/${id}`);
+  const { data: course, isLoading, error } = useSWR(`/api/courses/${id}`);
+
+  if (!isReady || isLoading) return <h2>Loading...</h2>;
+  if (error) return <h2>Error! 🔥</h2>;
 
   // unpdate Entry
   async function editCourse(course) {
+    console.log(course);
     const response = await fetch(`/api/courses/${id}`, {
       method: "PUT",
       headers: {
@@ -29,19 +27,18 @@ export default function EditPage() {
     });
 
     if (response.ok) {
-      mutate();
-      router.back();
+      await response.json();
+      router.push("/");
     } else {
-      alert("There was a Error");
+      const error = await response.json();
+      console.error(`Error: ${error.message}`);
     }
   }
 
-  if (!isReady || isLoading) return <h2>Loading...</h2>;
-  if (error) return <h2>Error! 🔥</h2>;
   return (
     <>
       <h2 id="edit-course">Edit Course</h2>
-      <Link href={`/courses/${id}`} passHref legacyBehavior>
+      <Link href="/" passHref legacyBehavior>
         <StyledLink justifySelf="start">back</StyledLink>
       </Link>
       <Form

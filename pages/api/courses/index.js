@@ -1,7 +1,7 @@
 import dbConnect from "../../../db/connection.js";
 import Course from "@/db/models/Course.js";
 
-// Backend Startseite
+// BACKEND START
 
 export default async function handler(request, response) {
   try {
@@ -17,6 +17,11 @@ export default async function handler(request, response) {
       return response
         .status(200)
         .json({ success: true, status: "Course created" });
+    }
+    // Daten von Datenbank bearbeiten
+    if (request.method === "PUT") {
+      const courseToUpdate = await Course.findByIdAndUpdate(id, request.body);
+      response.status(200).json(courseToUpdate);
     }
   } catch (e) {
     console.log(e);

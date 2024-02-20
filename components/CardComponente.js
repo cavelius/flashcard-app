@@ -23,6 +23,7 @@ export default function Cards() {
     }
   `;
 
+  console.log("data:", data);
   // Neue Card erstellen
   async function handleSubmitCard(e) {
     e.preventDefault();
@@ -45,6 +46,15 @@ export default function Cards() {
     } else {
       console.error(`Error: ${response.status}`);
     }
+  }
+  async function handleDelete() {
+    await fetch(`/api/courses/${id}`, {
+      method: "DELETE",
+    });
+    // You are handing over the joke identified by its id to our DELETE request method.
+    // This is the entire code required to do so.
+    router.push("/");
+    // After deleting the joke, you route back to our index page.
   }
 
   const cards = data?.cards;
@@ -69,6 +79,9 @@ export default function Cards() {
                   </small>
                 </p>
                 <span>{answer}</span>
+                <button type="button" onClick={handleDelete}>
+                  Delete
+                </button>
               </div>
             );
           })}

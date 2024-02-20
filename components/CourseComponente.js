@@ -1,4 +1,4 @@
-import Link from "next/link.js";
+import Link from "next/link";
 import styled from "styled-components";
 
 const Article = styled.article`
@@ -48,6 +48,19 @@ const Descripiton = styled.p`
   font-size: 15px;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Button = styled.button`
+  background-color: lightblue;
+  border: none;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+`;
+
 export default function Course({ name, description, id }) {
   return (
     <Article>
@@ -57,13 +70,16 @@ export default function Course({ name, description, id }) {
         </figcaption>
       </Figure>
       <p>
-        <Descripiton>description: {description}</Descripiton>
+        <Descripiton>Description: {description}</Descripiton>
       </p>
-      <Link href={`courses/${id}`} passHref legacyBehavior>
-        <Anchor>
-          <ScreenReaderOnly>More Info</ScreenReaderOnly>
-        </Anchor>
-      </Link>
+      <ButtonContainer>
+        <Link href={`/courses/${id}`} passHref>
+          <Button>Cards</Button>
+        </Link>
+        <Link href={`/courses/${id}/edit`} passHref>
+          <Button>Edit</Button>
+        </Link>
+      </ButtonContainer>
     </Article>
   );
 }
